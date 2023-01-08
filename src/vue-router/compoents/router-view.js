@@ -1,0 +1,25 @@
+export default {
+  functional: true,
+  render(h, { parent, data }) {
+    const route = parent.$route;
+
+    let depth = 0;
+
+    data.routerView = true;
+
+    while (parent) {
+      if (parent.$vnode && parent.$vnode.data.routerView) {
+        depth++;
+      }
+      parent = parent.$parent;
+    }
+
+    let record = route.matched[depth];
+
+    if (!record) {
+      return h();
+    }
+
+    return h(record.component, data);
+  },
+};
